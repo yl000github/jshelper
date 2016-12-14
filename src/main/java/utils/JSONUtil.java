@@ -20,6 +20,11 @@ public class JSONUtil {
 		JsonElement j=gson.fromJson(content, JsonElement.class);
 		return j;
 	}
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public static Object parse(String content,Class c){
+		Gson gson=getGson();
+		return gson.fromJson(content, c);
+	}
 	public static String stringify(Object json){
 		Gson gson=getGson();
 		return gson.toJson(json);

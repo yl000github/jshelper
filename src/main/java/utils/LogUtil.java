@@ -11,10 +11,15 @@ public class LogUtil {
 	public static void p(String flag,Object ob){
 //		System.out.println(ob.getClass().getName());
 		String c="";
+		if(ob instanceof String){
+			c=(String) ob;
+			System.out.println("===="+flag+"===="+c);
+			return;
+		}
 		if(ob!=null&&!ob.equals("")){
 			try {
 				c=JSONUtil.stringify(ob);
-			} catch (Exception e) {
+			} catch (Throwable e) {
 				c=(String) ob;
 			}
 		}

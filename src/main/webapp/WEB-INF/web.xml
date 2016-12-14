@@ -9,6 +9,11 @@
   	<display-name>MainController</display-name>
   	<description></description>
   	<servlet-class>controller.MainController</servlet-class>
+  	<init-param>
+      <param-name>rootpath</param-name>
+      <param-value>D:/git/jscontroller/</param-value>
+    </init-param> 
+    <load-on-startup>1</load-on-startup>
   </servlet>
   <servlet-mapping>
   	<servlet-name>MainController</servlet-name>

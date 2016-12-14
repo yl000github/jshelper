@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import enabler.txt.ConfigReader;
 import utils.JSONUtil;
 import utils.LogUtil;
 import utils.StringUtil;
@@ -38,12 +39,14 @@ public class MainController extends HttpServlet{
 	@Override
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
-		jsDir=config.getInitParameter("rootPath");
+		jsDir=config.getInitParameter("rootpath");
+//		LogUtil.p("jsPath", jsDir);
 		if(StringUtil.isBlank(jsDir)){
 //			jsDir=getServletContext().getRealPath("/");
 			jsDir=this.getClass().getClassLoader().getResource("/").getPath();
 		}
 		LogUtil.p("jsPath", jsDir);
+		ConfigReader.setMap(jsDir);
 		//注入一些默认的函数
 		try {
 			nashorn.eval("var $_jsDir_$='"+jsDir+"'");
