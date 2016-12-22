@@ -5,6 +5,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -37,6 +38,16 @@ public class FileUtil {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	public static void write(String filepath, InputStream is) throws IOException {
+		FileOutputStream fos = new FileOutputStream(filepath);
+		byte[] b = new byte[1024];
+		int len;
+		while((len=is.read(b)) != -1){
+			fos.write(b,0,len);
+		}
+		fos.flush();
+		fos.close();
 	}
 
 	public static void writeAdd(String filepath, String content) {

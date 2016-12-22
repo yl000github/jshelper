@@ -1,54 +1,125 @@
 package enabler.http;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
+import enabler.file.FileEnabler;
+import okhttp3.Call;
+import okhttp3.Callback;
 import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.MultipartBody.*;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import utils.FileUtil;
+import utils.JSONUtil;
 import utils.StringUtil;
 
 public class HttpEnabler {
 	OkHttpClient client = new OkHttpClient();
-	public static final MediaType JSON
-	= MediaType.parse("application/json; charset=utf-8");
-	public String get(String url) throws IOException{
-		  Request request = new Request.Builder()
-		      .url(url)
-		      .build();
-		  Response response = client.newCall(request).execute();
-		  return response.body().string();
+	public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+
+	public String get(String url) throws IOException {
+		Request request = new Request.Builder().url(url).build();
+		Response response = client.newCall(request).execute();
+		return response.body().string();
 	}
+
 	public String post(String url, String json) throws IOException {
-		  RequestBody body = RequestBody.create(JSON, json);
-		  Request request = new Request.Builder()
-		      .url(url)
-		      .post(body)
-		      .build();
-		  Response response = client.newCall(request).execute();
-		  return response.body().string();
+		RequestBody body = RequestBody.create(JSON, json);
+		Request request = new Request.Builder().url(url).post(body).build();
+		Response response = client.newCall(request).execute();
+		return response.body().string();
 	}
-	public static void main(String[] args) throws IOException {
-		HttpEnabler enabler=new HttpEnabler();
-//		System.out.println(enabler.get("http://www.baidu.com"));
-//		String json="{\"modelCName\":\"马自达CA7200ATE5轿车\",\"purchasePriceNotTax\":\"597184\"}";
-//		System.out.println(enabler.post("http://192.168.1.17:9011/docking/dockingManager/localVehicleQuery", json));
-		String url="https://polldaddy.com/n/d3e1ea5946929563171050bb86532171/9610345?1481873";
-		for (int i = 0; i < 20; i++) {
-			new Thread(new Runnable() {
-				@Override
-				public void run() {
-					try {
-						for (int j = 0; j < 1000; j++) {
-							String tUrl=url+StringUtil.getFixLenthString(6);
-							System.out.println(enabler.get(tUrl));
-						}
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-				}
-			}).start();
+
+	/**
+	 * 
+	 * @param url
+	 * @param json
+	 * @return
+	 * @throws IOException
+	 *             { file:{ "":"" }, keyValue:{ "":"" } }
+	 */
+	public String submitForm(String url, String json) throws IOException {
+		Form form = (Form) JSONUtil.parse(json, Form.class);
+		// String filepath;
+
+		// RequestBody requestBody = new MultipartBody.Builder()
+		// .setType(MultipartBody.FORM)
+		// .addFormDataPart("image", "test.jpg", fileBody)
+		// .build();
+		Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+		Map<String, String> fileMap = form.file;
+		Set<String> fileSet = fileMap.keySet();
+		for (String key : fileSet) {
+			String filepath = fileMap.get(key);
+			File file = new File(filepath);
+			String fileName = file.getName();
+			RequestBody fileBody = RequestBody.create(MediaType.parse("application/octet-stream"), file);
+			builder.addFormDataPart(key, fileName, fileBody);
 		}
+		Map<String, String> keyValueMap = form.keyValue;
+		Set<String> keyValueSet = keyValueMap.keySet();
+		for (String key : keyValueSet) {
+			String value = keyValueMap.get(key);
+			builder.addFormDataPart(key, value);
+		}
+		RequestBody requestBody = builder.build();
+		System.out.println(requestBody.toString());
+		Request request = new Request.Builder().url(url).post(requestBody).build();
+		Response response = client.newCall(request).execute();
+		return response.body().string();
+	}
+
+	public void download(String url, String filepath) throws IOException {
+		Request request = new Request.Builder().url(url).build();
+		 client.newCall(request)
+		 	.enqueue(new Callback(){
+
+				@Override
+				public void onFailure(Call call, IOException e) {
+					System.out.println("文件下载失败");
+				}
+
+				@Override
+				public void onResponse(Call call, Response response) throws IOException {
+					InputStream is=response.body().byteStream();
+					System.out.println(response.body().contentLength());
+					FileUtil.write(filepath, is);
+					is.close();
+				}
+		 		
+		 	});
+				
+//				execute();
+	}
+
+	public static void main(String[] args) throws IOException {
+		HttpEnabler enabler = new HttpEnabler();
+//		String filepath = "e:/demo.jpg";
+//		Map<String, String> file = new HashMap<>();
+//		long fileSize=FileEnabler.getFileSize(filepath);
+//		file.put("file", filepath);
+//		Map<String, String> keyValue = new HashMap<>();
+//		keyValue.put("fileSize", String.valueOf(fileSize));
+//		keyValue.put("fileName", FileEnabler.getFileName(filepath));
+//		Form form=new Form(file,keyValue);
+//		String json=JSONUtil.stringify(form);
+//		String url="http://192.168.1.21:10500/miResourceMgr/upload";
+//		String rs=enabler.submitForm(url, json);
+//		System.out.println(rs);
+		
+		String url="http://192.168.1.21:10500/miResourceMgr/group1/M00/00/12/wKgBFVhaLZyAJ7FRAABxokHWSy8365.jpg";
+		enabler.download(url, "e:/download.jpg");
+		
+		System.out.println("complete");
+		
+		
 	}
 }
