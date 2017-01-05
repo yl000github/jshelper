@@ -50,7 +50,6 @@ public class FileEnabler {
 		if(!root.isDirectory()) return "[]";
 		File[] files = root.listFiles();
 		if(files.length==0) return "[]";
-		int s=0;
 		List<String> list=new ArrayList<>();
 		for (File file : files) {
 			if (file.isDirectory()) {
