@@ -12,3 +12,7 @@
 # 安装
 需要jdk8的环境
 eclipse导入项目
+
+
+# demo 
+参考jscontroller项目
