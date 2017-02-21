@@ -127,7 +127,7 @@ public class BasicRobot extends Robot{
 		}else if(isIn(c,0x4E00,0x9FA5)){
 			//基本汉字,获取unicode，必须配合unicode输入法使用
 			String s=Integer.toHexString(c);
-			System.out.println(s);
+//			System.out.println(s);
 			for (int i = 0; i < s.length(); i++) {
 				char sc=s.charAt(i);
 				inputChar(sc);

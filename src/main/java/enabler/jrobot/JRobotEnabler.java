@@ -116,10 +116,10 @@ public class JRobotEnabler extends BasicRobot{
 //		enabler.mouseClick("left", 1);
 //		enabler.mouseMove(0.5, 0.5, true);
 //		enabler.mouseMove(17, 30, true);
-//		enabler.getRegionText(0.3, 0.3, 0.6, 0.6);
+		enabler.getRegionText(0.3, 0.3, 0.6, 0.6);
 		
 //		enabler.mouseMove(0.5, 0.5, false);
 //		enabler.inputText("hh12,");	
-		enabler.keyClick("Tab");
+//		enabler.keyClick("Tab");
 	}
 }
