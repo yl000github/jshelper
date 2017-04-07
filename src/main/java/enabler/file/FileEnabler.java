@@ -26,9 +26,9 @@ public class FileEnabler {
 	}
 	public static void  write(String filepath,String content,boolean isAdd){
 		if(isAdd){
-			FileUtil.write(filepath, content);
-		}else{
 			FileUtil.writeAdd(filepath, content);
+		}else{
+			FileUtil.write(filepath, content);
 		}
 	}
 	public static String  read(String filepath){

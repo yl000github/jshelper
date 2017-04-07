@@ -14,15 +14,24 @@ import utils.JSONUtil;
 import utils.LogUtil;
 
 public class DBEnabler extends AJdbc{
-	public DBEnabler(boolean autoCommit) {
-		try {
-			conn.setAutoCommit(autoCommit);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+	public DBEnabler() {
 	}
-	public static DBEnabler open(boolean autoCommit){
-		return new DBEnabler(autoCommit);
+	public void setAutoCommit(boolean autoCommit) throws SQLException{
+		conn.setAutoCommit(autoCommit);
+	}
+	public static DBEnabler open(boolean autoCommit) throws Exception{
+		DBEnabler enabler=new DBEnabler();
+		enabler.prepare();
+		enabler.setAutoCommit(autoCommit);
+		return enabler;
+	}
+	public static DBEnabler open(String config,boolean autoCommit) throws Exception{
+		if(config==null) return null;
+		DBConfig configObj=(DBConfig) JSONUtil.parse(config,DBConfig.class);
+		DBEnabler enabler=new DBEnabler();
+		enabler.prepare(configObj);
+		enabler.setAutoCommit(autoCommit);
+		return enabler;
 	}
 	private Req trans(String src){
 		return (Req) JSONUtil.parse(src, Req.class);
@@ -80,11 +89,18 @@ public class DBEnabler extends AJdbc{
 		stmt=conn.createStatement();
 		//批处理？
 		boolean rs=stmt.execute(sql);
+		ResultSet results=stmt.getGeneratedKeys();
+		int num=-1;
+	     if(results.next())
+         {
+             num = results.getInt(1);
+         }
 		String str=String.valueOf(rs);
 		LogUtil.p("查询出的结果为",str);
-		return str;
+		return String.valueOf(num);
 	}
 	public static void main(String[] args) {
 		System.out.println("==");
+		
 	}
 }

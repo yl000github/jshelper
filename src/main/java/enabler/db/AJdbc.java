@@ -6,27 +6,26 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import common.Constants;
 import enabler.txt.ConfigReader;
 
 public abstract class AJdbc {
 	Connection conn = null;
 	Statement stmt = null;
 	ResultSet rs = null;
-	String url = null;
-	String user = null;
-	String password = null;
-	String driver = null;
+	protected String url = null;
+	protected String user = null;
+	protected String password = null;
+	protected String driver = null;
 	String sql = null;
 
 	public AJdbc() {
-		try {
-			prepare();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 
-	private void prepare() throws Exception {
+	protected  void prepare() throws Exception {
+		if(Constants.jsDir!=null){
+			ConfigReader.setMap(Constants.jsDir);
+		}
 		driver=ConfigReader.getValue("driver");
 		Class.forName(driver); // 加载mysq驱动
 //		url = "jdbc:mysql://localhost:3306/myself?useUnicode=true&&characterEncoding=utf-8&autoReconnect=true";
@@ -35,6 +34,14 @@ public abstract class AJdbc {
 		url=ConfigReader.getValue("url");
 		user=ConfigReader.getValue("user");
 		password=ConfigReader.getValue("password");
+		conn = DriverManager.getConnection(url, user, password);
+	}
+	protected  void prepare(DBConfig config) throws Exception {
+		driver=config.driver;
+		Class.forName(driver); // 加载mysq驱动
+		url=config.url;
+		user=config.user;
+		password=config.password;
 		conn = DriverManager.getConnection(url, user, password);
 	}
 

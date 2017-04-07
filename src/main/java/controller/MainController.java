@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import common.Constants;
 import enabler.txt.ConfigReader;
 import utils.JSONUtil;
 import utils.LogUtil;
@@ -45,6 +46,7 @@ public class MainController extends HttpServlet{
 //			jsDir=getServletContext().getRealPath("/");
 			jsDir=this.getClass().getClassLoader().getResource("/").getPath();
 		}
+		Constants.jsDir=jsDir;
 		LogUtil.p("jsPath", jsDir);
 		ConfigReader.setMap(jsDir);
 		//注入一些默认的函数
