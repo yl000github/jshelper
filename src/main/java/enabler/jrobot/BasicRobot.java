@@ -10,6 +10,8 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.imageio.ImageIO;
 
@@ -133,12 +135,29 @@ public class BasicRobot extends Robot{
 				inputChar(sc);
 			}
 //			keyClick(KeyEvent.VK_SPACE);
-		}else if(c=='#'){
-			//有问题
-			keyClick(KeyEvent.VK_NUMBER_SIGN);
-		}else{
-			//not support  TODO
-			
+		}else {
+			Map<String,Integer> map=new HashMap<>();
+			map.put("#", KeyEvent.VK_NUMBER_SIGN);
+			map.put("，", KeyEvent.VK_COMMA);
+			map.put(",", KeyEvent.VK_COMMA);
+			map.put(" ", KeyEvent.VK_SPACE);
+			map.put(".", KeyEvent.VK_PERIOD);
+			map.put("。", KeyEvent.VK_PERIOD);
+			map.put("/", KeyEvent.VK_SLASH);
+			map.put(";", KeyEvent.VK_SEMICOLON);
+			map.put("；", KeyEvent.VK_SEMICOLON);
+			map.put("\"", KeyEvent.VK_QUOTE);
+			map.put("[", KeyEvent.VK_OPEN_BRACKET);
+			map.put("]", KeyEvent.VK_CLOSE_BRACKET);
+			map.put("\\", KeyEvent.VK_BACK_SLASH);
+			map.put("-", KeyEvent.VK_MINUS);
+			map.put("=", KeyEvent.VK_EQUALS);
+			String str=String.valueOf(c);
+//			System.out.println("c:"+c);
+			Integer key=map.get(str);
+//			System.out.println("key:"+key);
+			if(key==null) return;
+			keyClick(key);
 		}
 	}
 	public void move(int x,int y){

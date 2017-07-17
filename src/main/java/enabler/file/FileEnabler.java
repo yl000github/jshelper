@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import common.Constants;
 import utils.FileUtil;
 import utils.JSONUtil;
 
@@ -24,7 +25,16 @@ public class FileEnabler {
 			return "";
 		}
 	}
+	private static String trans(String src){
+		if(src.contains(":")){
+			//绝对路径
+			return src;
+		}else{
+			return Constants.jsDir+src;
+		}
+	}
 	public static void  write(String filepath,String content,boolean isAdd){
+		filepath=trans(filepath);
 		if(isAdd){
 			FileUtil.writeAdd(filepath, content);
 		}else{
@@ -32,6 +42,7 @@ public class FileEnabler {
 		}
 	}
 	public static String  read(String filepath){
+		filepath=trans(filepath);
 		if(!checkFile(filepath)) return "";
 		String rs=FileUtil.read(filepath);
 		return rs;

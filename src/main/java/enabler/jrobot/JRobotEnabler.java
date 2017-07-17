@@ -106,7 +106,7 @@ public class JRobotEnabler extends BasicRobot{
 	}
 	public static void main(String[] args) throws Exception {
 		JRobotEnabler enabler=new JRobotEnabler();
-//		enabler.shortCut("switchPage");
+		enabler.shortCut("switchPage");
 //		enabler.shortCut("switchPage");
 //		enabler.shortCut("switchDesk");
 //		enabler.shortCut("qqOpen");
@@ -116,10 +116,13 @@ public class JRobotEnabler extends BasicRobot{
 //		enabler.mouseClick("left", 1);
 //		enabler.mouseMove(0.5, 0.5, true);
 //		enabler.mouseMove(17, 30, true);
-		enabler.getRegionText(0.3, 0.3, 0.6, 0.6);
+//		enabler.getRegionText(0.3, 0.3, 0.6, 0.6);
 		
 //		enabler.mouseMove(0.5, 0.5, false);
-//		enabler.inputText("hh12,");	
+//		enabler.inputText("-=【】、；‘，。、");	
+		enabler.inputText("一，");	
 //		enabler.keyClick("Tab");
+		//-=,.
+		//-=
 	}
 }
