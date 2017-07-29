@@ -45,7 +45,11 @@ public class DBEnabler extends AJdbc{
 		Set<String> keySet=map.keySet();
 		for (String key : keySet) {
 			String value=map.get(key);
-			sql=sql.replace("@"+key, "'"+value+"'");
+			if(value==null){
+				sql=sql.replace("@"+key, "null");
+			}else{
+				sql=sql.replace("@"+key, "'"+value+"'");
+			}
 		}
 		return sql;
 	}
