@@ -208,6 +208,14 @@ public class BasicRobot extends Robot{
 		keyRelease(KeyEvent.VK_D);
 		Thread.sleep(100);
 	}	
+	public void backTab() throws InterruptedException{
+		keyPress(KeyEvent.VK_SHIFT);
+		keyPress(KeyEvent.VK_TAB);
+		Thread.sleep(100);
+		keyRelease(KeyEvent.VK_SHIFT);
+		keyRelease(KeyEvent.VK_TAB);
+		Thread.sleep(100);
+	}	
 	protected void twoKey(int key1,int key2) throws InterruptedException{
 		keyPress(key1);
 		keyPress(key2);
@@ -277,7 +285,9 @@ public class BasicRobot extends Robot{
 	public static void main(String[] args) throws Exception {
 		System.out.println((char)('a'-32));
 		BasicRobot a=new BasicRobot();
-		a.switchDesk();
+//		a.switchDesk();
+		a.switchPage();
+		a.backTab();
 //		a.mouseMove((int)a.width/2, (int)a.height/2);
 //		a.mousePress(MouseEvent.BUTTON1_MASK);
 //		a.mousePress(MouseEvent.BUTTON1_MASK);

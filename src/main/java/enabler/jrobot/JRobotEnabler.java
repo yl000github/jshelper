@@ -49,6 +49,9 @@ public class JRobotEnabler extends BasicRobot{
 		case "screenShot":
 			this.screenShot();
 			break;
+		case "backTab":
+			this.backTab();
+			break;
 		}
 	}
 	/**
