@@ -10,6 +10,7 @@ import java.util.Set;
 import enabler.file.FileEnabler;
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.Headers;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.MultipartBody.*;
@@ -76,9 +77,20 @@ public class HttpEnabler {
 		Response response = client.newCall(request).execute();
 		return response.body().string();
 	}
-
 	public void download(String url, String filepath) throws IOException {
-		Request request = new Request.Builder().url(url).build();
+		download(url, filepath, null);
+	}
+	public void download(String url, String filepath,String headersStr) throws IOException {
+		Request.Builder builder = new Request.Builder();
+		if(headersStr!=null){
+			Map<String,String> headersMap=(Map<String, String>) JSONUtil.parse(headersStr, Map.class);
+			Set<String> keySet = headersMap.keySet();
+			for (String key : keySet) {
+				String value=headersMap.get(key);
+				builder.addHeader(key, value);
+			}
+		}
+		Request request = builder.url(url).build();
 		 client.newCall(request)
 		 	.enqueue(new Callback(){
 
@@ -115,8 +127,12 @@ public class HttpEnabler {
 //		String rs=enabler.submitForm(url, json);
 //		System.out.println(rs);
 		
-		String url="http://192.168.1.21:10500/miResourceMgr/group1/M00/00/12/wKgBFVhaLZyAJ7FRAABxokHWSy8365.jpg";
-		enabler.download(url, "e:/download.jpg");
+		String url="http://img.mmjpg.com/2015/1/2.jpg";
+		Map<String,String> headersMap=new HashMap<String, String>();
+		headersMap.put("user-agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36");
+		headersMap.put("Referer", "http://www.mmjpg.com");
+		String headersStr=JSONUtil.stringify(headersMap);
+		enabler.download(url, "f:/java.jpg",headersStr);
 		
 		System.out.println("complete");
 		

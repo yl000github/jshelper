@@ -29,7 +29,65 @@ public class FileUtil {
 			}
 		}
 	}
+	public static void mkdir(String filepath,boolean overwrite) throws IOException {
+		File dir = new File(filepath);
+		if (dir.exists()) {// 判断目录是否存在
+			if(overwrite){
+				delDirectory(filepath);
+//				mkdir(filepath, false);
+			}else{
+				System.out.println("创建目录失败，目标目录已存在！");
+			}
+		}
+		if (dir.mkdirs()) {// 创建目标目录
+			System.out.println("创建目录成功！" + filepath);
+		} else {
+			System.out.println("创建目录失败！");
+		}
+	}
+	public static boolean delFile(String filePath) {// 删除单个文件
+		boolean flag = false;
+		File file = new File(filePath);
+		if (file.isFile() && file.exists()) {// 路径为文件且不为空则进行删除
+			file.delete();// 文件删除
+			flag = true;
+		}
+		return flag;
+	}
 
+	public static boolean delDirectory(String dirPath) {// 删除目录（文件夹）以及目录下的文件
+		boolean flag = false;
+		// 如果sPath不以文件分隔符结尾，自动添加文件分隔符
+		if (!dirPath.endsWith(File.separator)) {
+			dirPath = dirPath + File.separator;
+		}
+		File dirFile = new File(dirPath);
+		// 如果dir对应的文件不存在，或者不是一个目录，则退出
+		if (!dirFile.exists() || !dirFile.isDirectory()) {
+			return false;
+		}
+		flag = true;
+		File[] files = dirFile.listFiles();// 获得传入路径下的所有文件
+		for (int i = 0; i < files.length; i++) {// 循环遍历删除文件夹下的所有文件(包括子目录)
+			if (files[i].isFile()) {// 删除子文件
+				flag = delFile(files[i].getAbsolutePath());
+				System.out.println(files[i].getAbsolutePath() + " 删除成功");
+				if (!flag)
+					break;// 如果删除失败，则跳出
+			} else {// 运用递归，删除子目录
+				flag = delDirectory(files[i].getAbsolutePath());
+				if (!flag)
+					break;// 如果删除失败，则跳出
+			}
+		}
+		if (!flag)
+			return false;
+		if (dirFile.delete()) {// 删除当前目录
+			return true;
+		} else {
+			return false;
+		}
+	}
 	public static void write(String filepath, String content) {
 		try {
 			BufferedWriter bw = new BufferedWriter(new FileWriter(filepath));
@@ -163,6 +221,9 @@ public class FileUtil {
 //		System.out.println(getFilesLines("D:\\HbuilderWorkspace\\omp\\client\\app","js"));
 		// write(filepath, c);
 		// System.out.println(read(filepath));
-		createFile("e:/111.txt", true);
+//		createFile("e:/111.txt", true);
+		
+		
+		mkdir("f:/hhhh/", true);
 	}
 }

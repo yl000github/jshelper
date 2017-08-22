@@ -1,7 +1,9 @@
 package enabler.picture;
 
 import java.awt.AWTException;
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Rectangle;
 import java.awt.Robot;
 import java.awt.Toolkit;
@@ -10,6 +12,11 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+
+
+
+import utils.ImageMergeUtils;
+import utils.ImageUtils;
 
 public class PictureEnabler {
 	Robot robot=null;
@@ -34,6 +41,24 @@ public class PictureEnabler {
 	public String recongise(String path){
 		return path;
 	}
+	/**
+	 * 图片合并
+	 * @param imgs
+	 * @param type
+	 * @param dst_pic
+	 * @param widthNum
+	 * @return
+	 */
+	public boolean merge(String[] imgs, String type, String dst_pic,int widthNum) {
+		return ImageMergeUtils.merge(imgs, type, dst_pic, widthNum);
+	}
+	public void scale(String srcImageFile, String result, int height, int width){
+		ImageUtils.scale2(srcImageFile, result, height, width, true);
+	}
+    public void pressText(String pressText,String srcImageFile, String destImageFile, String fontName){
+    	int fontSize=10;
+    	ImageUtils.pressText(pressText, srcImageFile, destImageFile, fontName, Font.BOLD,Color.white,fontSize, 0, 0, 0.5f);
+    }
 	public static void main(String[] args) throws AWTException, IOException {
 		PictureEnabler enabler=new PictureEnabler();
 		enabler.screenshot("e:/screenshot.png");

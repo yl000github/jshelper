@@ -1,6 +1,7 @@
 package enabler.file;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +33,9 @@ public class FileEnabler {
 		}else{
 			return Constants.jsDir+src;
 		}
+	}
+	public static void mkdir(String filepath,boolean overwrite) throws IOException {
+		FileUtil.mkdir(filepath, overwrite);
 	}
 	public static void  write(String filepath,String content,boolean isAdd){
 		filepath=trans(filepath);

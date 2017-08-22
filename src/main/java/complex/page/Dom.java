@@ -13,6 +13,9 @@ public class Dom {
 	public String getText(){
 		return ele.getText();
 	}
+//	public String getHtml(){
+//		return ele.get
+//	}
 	public void setValue(String src){
 		ele.sendKeys(src);
 	}

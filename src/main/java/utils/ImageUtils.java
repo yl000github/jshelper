@@ -40,10 +40,10 @@ public class ImageUtils {
 //        ImageUtils.scale("e:/abc.jpg", "e:/abc_scale.jpg", 2, true);//测试OK
         // 方法二：按高度和宽度缩放
 
-        for(int i=0;i<25;i++){
-        	String fileName=i+".png";
-        	ImageUtils.scale2("f:yiji/"+fileName, "f:yiji/output/"+fileName, 300, 300, true);//测试OK
-        }
+//        for(int i=0;i<25;i++){
+//        	String fileName=i+".png";
+//        	ImageUtils.scale2("f:yiji/"+fileName, "f:yiji/output/"+fileName, 300, 300, true);//测试OK
+//        }
 
 //        // 2-切割图像：
 //        // 方法一：按指定起点坐标和宽高切割
@@ -64,7 +64,7 @@ public class ImageUtils {
 //
 //        // 5-给图片添加文字水印：
 //        // 方法一：
-//        ImageUtils.pressText("我是水印文字","e:/abc.jpg","e:/abc_pressText.jpg","宋体",Font.BOLD,Color.white,80, 0, 0, 0.5f);//测试OK
+        ImageUtils.pressText("我是水印文字","f:yiji/0.png","f:/0.png","宋体",Font.BOLD,Color.white,10, 0, 0, 0.5f);//测试OK
 //        // 方法二：
 //        ImageUtils.pressText2("我也是水印文字", "e:/abc.jpg","e:/abc_pressText2.jpg", "黑体", 36, Color.white, 80, 0, 0, 0.5f);//测试OK
 //        
