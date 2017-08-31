@@ -52,8 +52,8 @@ public class PictureEnabler {
 	public boolean merge(String[] imgs, String type, String dst_pic,int widthNum) {
 		return ImageMergeUtils.merge(imgs, type, dst_pic, widthNum);
 	}
-	public void scale(String srcImageFile, String result, int height, int width){
-		ImageUtils.scale2(srcImageFile, result, height, width, true);
+	public void scale(String srcImageFile, String result, int height, int width,boolean bb){
+		ImageUtils.scale2(srcImageFile, result, height, width, bb);
 	}
     public void pressText(String pressText,String srcImageFile, String destImageFile, String fontName){
     	int fontSize=10;

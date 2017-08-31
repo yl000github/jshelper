@@ -11,7 +11,12 @@ public class JsoupEnabler {
 	public static Document open(String url) throws IOException{
 		return Jsoup.connect(url).timeout(30000).get();
 	}
-	
+	public static Document parse(String html){
+		return Jsoup.parse(html);
+	}
+	public static Document parseBody(String body){
+		return Jsoup.parseBodyFragment(body);
+	}
 	public static void main(String[] args) throws IOException {
 //		String word="人";
 //		String url="http://www.iciba.com/"+word;
@@ -37,9 +42,14 @@ public class JsoupEnabler {
 		//pic path
 		String url="http://www.mmjpg.com/mm/7/2";
 		Document doc = Jsoup.connect(url).timeout(30000).get(); 
-		String path = doc.select("div.content").select("a").select("img").attr("src");
-		System.out.println();
-		
+//		System.out.println(doc.html());
+//		System.out.println(doc.select("div.header").text());
+//		System.out.println(doc.select("div.header").html());
+//		System.out.println(doc.select("div.header").outerHtml());
+		System.out.println(doc.select("div").outerHtml());
+//		System.out.println(doc.select("div.header").text());
+//		String path = doc.select("div.header").text();
+//		System.out.println(path);
 		
 //		System.out.println(list.get(-2));
 	}

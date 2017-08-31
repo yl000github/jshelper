@@ -40,10 +40,10 @@ public class ImageUtils {
 //        ImageUtils.scale("e:/abc.jpg", "e:/abc_scale.jpg", 2, true);//测试OK
         // 方法二：按高度和宽度缩放
 
-//        for(int i=0;i<25;i++){
-//        	String fileName=i+".png";
-//        	ImageUtils.scale2("f:yiji/"+fileName, "f:yiji/output/"+fileName, 300, 300, true);//测试OK
-//        }
+        for(int i=0;i<25;i++){
+        	String fileName=i+".png";
+        	ImageUtils.scale2("f:yiji/"+fileName, "f:yiji/output1/"+fileName, 300, 300, true);//测试OK
+        }
 
 //        // 2-切割图像：
 //        // 方法一：按指定起点坐标和宽高切割
@@ -64,7 +64,7 @@ public class ImageUtils {
 //
 //        // 5-给图片添加文字水印：
 //        // 方法一：
-        ImageUtils.pressText("我是水印文字","f:yiji/0.png","f:/0.png","宋体",Font.BOLD,Color.white,10, 0, 0, 0.5f);//测试OK
+//        ImageUtils.pressText("我是水印文字","f:yiji/0.png","f:/0.png","宋体",Font.BOLD,Color.white,10, 0, 0, 0.5f);//测试OK
 //        // 方法二：
 //        ImageUtils.pressText2("我也是水印文字", "e:/abc.jpg","e:/abc_pressText2.jpg", "黑体", 36, Color.white, 80, 0, 0, 0.5f);//测试OK
 //        
@@ -109,17 +109,21 @@ public class ImageUtils {
             BufferedImage bi = ImageIO.read(f);
             Image itemp = bi.getScaledInstance(width, height, bi.SCALE_SMOOTH);
             // 计算比例
-            if ((bi.getHeight() > height) || (bi.getWidth() > width)) {
-                if (bi.getHeight() > bi.getWidth()) {
-                    ratio = (new Integer(height)).doubleValue()
-                            / bi.getHeight();
-                } else {
-                    ratio = (new Integer(width)).doubleValue() / bi.getWidth();
-                }
-                AffineTransformOp op = new AffineTransformOp(AffineTransform
-                        .getScaleInstance(ratio, ratio), null);
-                itemp = op.filter(bi, null);
-            }
+//            if ((bi.getHeight() > height) || (bi.getWidth() > width)) {
+//                if (bi.getHeight() > bi.getWidth()) {
+//                    ratio = (new Integer(height)).doubleValue()
+//                            / bi.getHeight();
+//                } else {
+//                    ratio = (new Integer(width)).doubleValue() / bi.getWidth();
+//                }
+//                AffineTransformOp op = new AffineTransformOp(AffineTransform
+//                        .getScaleInstance(ratio, ratio), null);
+//                itemp = op.filter(bi, null);
+//            }
+            AffineTransformOp op = new AffineTransformOp(AffineTransform
+                    .getScaleInstance((new Integer(width)).doubleValue() / bi.getWidth(), (new Integer(height)).doubleValue()
+                            / bi.getHeight()), null);
+            itemp = op.filter(bi, null);
             if (bb) {//补白
                 BufferedImage image = new BufferedImage(width, height,
                         BufferedImage.TYPE_INT_RGB);
@@ -136,7 +140,20 @@ public class ImageUtils {
                             Color.white, null);
                 g.dispose();
                 itemp = image;
+            }else{
+                BufferedImage image = new BufferedImage(width, height,
+                        BufferedImage.TYPE_INT_RGB);
+                Graphics2D g = image.createGraphics();
+                g.setColor(Color.white);
+                g.fillRect(0, 0, width, height);
+                g.drawImage(itemp, 0, 0,
+                        itemp.getWidth(null), itemp.getHeight(null),
+                        Color.white, null);
+                g.dispose();
+                itemp = image;
+ 
             }
+            FileUtil.createFile(result, true);
             ImageIO.write((BufferedImage) itemp, "JPEG", new File(result));
         } catch (IOException e) {
             e.printStackTrace();
