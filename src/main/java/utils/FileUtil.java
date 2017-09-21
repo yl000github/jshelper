@@ -90,6 +90,7 @@ public class FileUtil {
 	}
 	public static void write(String filepath, String content) {
 		try {
+			createFile(filepath, false);
 			BufferedWriter bw = new BufferedWriter(new FileWriter(filepath));
 			bw.write(content);
 			bw.close();
@@ -98,6 +99,7 @@ public class FileUtil {
 		}
 	}
 	public static void write(String filepath, InputStream is) throws IOException {
+		createFile(filepath, true);
 		FileOutputStream fos = new FileOutputStream(filepath);
 		byte[] b = new byte[1024];
 		int len;

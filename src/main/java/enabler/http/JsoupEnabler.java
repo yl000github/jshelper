@@ -1,5 +1,6 @@
 package enabler.http;
 
+import java.io.File;
 import java.io.IOException;
 
 import org.jsoup.Jsoup;
@@ -10,6 +11,10 @@ import org.jsoup.select.Elements;
 public class JsoupEnabler {
 	public static Document open(String url) throws IOException{
 		return Jsoup.connect(url).timeout(30000).get();
+	}
+	public static Document openFile(String path) throws IOException{
+		File f=new File(path);
+		return Jsoup.parse(f, "UTF-8");
 	}
 	public static Document parse(String html){
 		return Jsoup.parse(html);
